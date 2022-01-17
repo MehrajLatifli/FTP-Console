@@ -114,8 +114,21 @@ namespace FTP_Console
                 string ex = fileInfo.Extension;
 
 
+                Console.Write(" --------");
+      
+
+                Console.Write("\n   |");
+                Console.Write("\n   ----> Enter username: ");
+
+                string username = Console.ReadLine();
+
+                Console.Write("\n   |");
+                Console.Write("\n   ----> Enter password: ");
+
+                string password = Console.ReadLine();
+
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create($"ftp://ftpupload.net/htdocs/{path}");
-                request.Credentials = new NetworkCredential("epiz_30770440", "qQs9vfxpbjcExl9");
+                request.Credentials = new NetworkCredential(username, password);
                 request.Method = WebRequestMethods.Ftp.DownloadFile;
 
                 using (Stream ftpStream = request.GetResponse().GetResponseStream())
