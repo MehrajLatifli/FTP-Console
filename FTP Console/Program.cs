@@ -131,6 +131,9 @@ namespace FTP_Console
                 request.Credentials = new NetworkCredential(username, password);
                 request.Method = WebRequestMethods.Ftp.DownloadFile;
 
+                request.Timeout = 500;
+                request.UsePassive = true;
+
                 using (Stream ftpStream = request.GetResponse().GetResponseStream())
                 using (Stream fileStream = File.Create($"{filePath} {Guid.NewGuid()} {ex}"))
                 {
