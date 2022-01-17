@@ -49,10 +49,7 @@ namespace FTP_Console
         static (bool, string) Uploadfile(string filePath)
         {
             Console.Write(" --------");
-            Console.Write("\n   |");
-            Console.Write("\n   ----> Enter ftplink: ");
 
-            string link = Console.ReadLine();
 
             Console.Write("\n   |");
             Console.Write("\n   ----> Enter username: ");
@@ -70,14 +67,14 @@ namespace FTP_Console
             {
                 string path = Path.GetFileName(filePath);
 
-                FtpWebRequest request = (FtpWebRequest)WebRequest.Create($"ftp://{link}/{path}");
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create($"ftp://ftpupload.net/htdocs/{path}");
                 request.Credentials = new NetworkCredential($"{username}", $"{password}");
                 request.Method = WebRequestMethods.Ftp.UploadFile;
 
                 using (Stream fileStream = File.OpenRead($"{filePath}"))
                 using (Stream ftpStream = request.GetRequestStream())
                 {
-                    byte[] buffer = new byte[1024000];
+                    byte[] buffer = new byte[102400000];
                     int read;
                     while ((read = fileStream.Read(buffer, 0, buffer.Length)) > 0)
                     {
@@ -102,8 +99,24 @@ namespace FTP_Console
         static (bool, string) Downloadfile(string filePath)
         {
 
+
+            Console.Write(" --------");
+
+
+            Console.Write("\n   |");
+            Console.Write("\n   ----> Enter username: ");
+
+            string username = Console.ReadLine();
+
+            Console.Write("\n   |");
+            Console.Write("\n   ----> Enter password: ");
+
+            string password = Console.ReadLine();
+
             try
             {
+
+
 
                 string path = Path.GetFileName(filePath);
 
@@ -114,19 +127,6 @@ namespace FTP_Console
                 string ex = fileInfo.Extension;
 
 
-                Console.Write(" --------");
-      
-
-                Console.Write("\n   |");
-                Console.Write("\n   ----> Enter username: ");
-
-                string username = Console.ReadLine();
-
-                Console.Write("\n   |");
-                Console.Write("\n   ----> Enter password: ");
-
-                string password = Console.ReadLine();
-
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create($"ftp://ftpupload.net/htdocs/{path}");
                 request.Credentials = new NetworkCredential(username, password);
                 request.Method = WebRequestMethods.Ftp.DownloadFile;
@@ -134,7 +134,7 @@ namespace FTP_Console
                 using (Stream ftpStream = request.GetResponse().GetResponseStream())
                 using (Stream fileStream = File.Create($"{filePath} {Guid.NewGuid()} {ex}"))
                 {
-                    byte[] buffer = new byte[1024000];
+                    byte[] buffer = new byte[102400000];
                     int read;
                     while ((read = ftpStream.Read(buffer, 0, buffer.Length)) > 0)
                     {
